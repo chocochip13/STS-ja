@@ -26,12 +26,15 @@ def surface_sudachitokens(df):
 def normalized_sudachitokens(df):
     tokenizer_obj = dictionary.Dictionary().create()
     mode = tokenizer.Tokenizer.SplitMode.C #(Mode = B or C)
-    for i in range(df.shape[0]):
-        a = df.iloc[i].to_string()
-        a = neologdn.normalize(a)
-        df['text'][i] = [m.normalized() for m in tokenizer_obj.tokenize(a, mode)]
-        print(i)
+    for j in range(df.columns.shape[0]):
+        for i in range(df.shape[0]):
+            #a = df.iloc[i,j].to_string()
+            a = neologdn.normalize(df.iloc[i,j])
+            df[df.columns[j]][i] = [m.normalized() for m in tokenizer_obj.tokenize(a, mode)]
+            print(i, df.columns[j])
+    #df.columns = ['sudachi']
     return df
+
 
 
 def stopwords_removal(df, columns,  en_stopwords, ja_stopwords, en_dictionary):
